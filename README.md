@@ -11,7 +11,7 @@ To install package: `pip install -r requirements.txt`
 
 To run the server locally: `bokeh serve --show lolliplotServer.py`
 
-You can access it in [0.0.0.0:5006]() and plot some cool stuff by entering `YLR422W.0.ssw11.hhr` on the `File Name` field. You should see something like this:
+You can access it in http://0.0.0.0:5006 and plot some cool stuff by entering `YLR422W.0.ssw11.hhr` on the `File Name` field. You should see something like this:
 
 ![](screenshot.png)
 
