@@ -12,7 +12,6 @@ from bokeh.models import HoverTool, CustomJS
 
 import numpy as np
 
-from sklearn.cluster import KMeans
 
 ################## Some helper functions ##################
 
@@ -57,9 +56,8 @@ def fill_data(nhits,hitList):
 
 # Active clustering: override input data per hit  with data per cluster
 def cluster_data(x2d, pcent, n_clust):
-    kmeans = KMeans(n_clusters=n_clust, random_state=77)
-    c_labels = kmeans.fit_predict(x2d)
-    c_centers = kmeans.cluster_centers_
+    c_labels = np.random.randint(1,n_clust+1,x2d.shape[0])
+    c_centers = np.random.rand(n_clust,2)
 
     nhits = x2d.shape[0]
     x1cl = c_centers[:,0]
@@ -81,8 +79,7 @@ def cluster_data(x2d, pcent, n_clust):
 
 # Passive clustering: return cluster labels only
 def cluster_data_pred(x2d, n_clust):
-    kmeans = KMeans(n_clusters=n_clust, random_state=77)
-    c_labels = kmeans.fit_predict(x2d)
+    c_labels = np.random.randint(1,n_clust+1,x2d.shape[0])
 
     return c_labels
 
@@ -189,6 +186,8 @@ def slider_handler2(attrname, old, new):
     else:
         x2d = np.vstack((ref_data['x1'], ref_data['dx'])).T
         x1, dx, y, pcentcl, name, detail, clabels = cluster_data(x2d, ref_data['pcent'], ncl)
+        x1 = x1*xmax
+        dx = dx*xmax
         new_data = dict()
         new_data['x1'] = x1
         new_data['x2'] = x1+dx
