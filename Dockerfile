@@ -12,4 +12,4 @@ COPY YLR422W.0.ssw11.hhr /HHyeast-server/
 
 EXPOSE 5006
 
-CMD bokeh serve lolliplotServer.py --allow-websocket-origin={{url}}:5006
+CMD bokeh serve lolliplotServer.py --allow-websocket-origin=$AZURE_URL:5006
