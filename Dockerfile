@@ -1,13 +1,5 @@
 # our base image
-FROM alpine:3.6
-
-# Install python and pip
-RUN apk add --no-cache python3 && \
-    python3 -m ensurepip && \
-    rm -r /usr/lib/python*/ensurepip && \
-    pip3 install --upgrade pip setuptools && \
-    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
-    rm -r /root/.cache
+FROM python
 
 # install Python modules needed by the Python app
 COPY requirements.txt /usr/src/app/
