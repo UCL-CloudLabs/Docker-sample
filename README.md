@@ -11,8 +11,16 @@ This branch hosts the R calculator by David Col'quhoun and a script to serve it.
   - \[a bit simpler\] Set up an inbound rule redirecting port 80 to 3838, and additional rules opening ports 80 and 3838. This only saves editing the server configuration file.
  
  - It's possible that the following command is also required to be run from the VM, in addition to the Azure configuration:
- `sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 3838 -j REDIRECT --to-port 80`
+
+`sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 3838 -j REDIRECT --to-port 80`
+ 
  (or swapping 80 and 3838 if following the second way above)
+
+- If the ports are not open, despite the rules on the Azure portal:
+
+`sudo iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT`
+
+`sudo iptables -A INPUT -i eth0 -p tcp --dport 3838 -j ACCEPT`
 
 - After changing the configuration file, shiny-server has to be restarted with:
 `sudo systemctl restart shiny-server`
