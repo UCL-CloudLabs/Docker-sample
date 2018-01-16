@@ -1,4 +1,7 @@
-# Cucumber-cats
+# Cucumber-cats (Azure version)
+
+THis is a variant of the cucumber_cats branch for automatic deployment through
+Azure Web Apps.
 
 Some information on the work done in this branch can be found on this private repo:
 
@@ -53,7 +56,7 @@ flask run
 Azure is supposed to work well with Docker containers, and CloudLabs will be based on Docker for its initial prototype, so I tried to run my flask app on a Docker container.
 
 __Requirements__:
-* Docker for Mac 
+* Docker for Mac
  * I'm using version 17.03.1-ce-mac12 (17661)
 
 __Dockerfile__:
@@ -83,7 +86,7 @@ ENV FLASK_APP /usr/src/app/app.py
 CMD ["python", "/usr/src/app/app.py"]
 ```
 
-Note version 0.12 of Flask (latest available) will let you run this applications with `flask run` after exporting the `FLASK_APP` env variable and make it point to `app.py`. However this doesn't work with Docker, so I had to run it as `python app.py`. 
+Note version 0.12 of Flask (latest available) will let you run this applications with `flask run` after exporting the `FLASK_APP` env variable and make it point to `app.py`. However this doesn't work with Docker, so I had to run it as `python app.py`.
 
 __Run__:
 
@@ -111,7 +114,7 @@ services:
 
 Version 3 is the latest version of docker-compose yaml.
 
-For now, we only have one service: __cat-cucumber__. 
+For now, we only have one service: __cat-cucumber__.
 
 This service can be built using the Dockerfile in the current folder `.`, and running mapping port `5000` to host's `5000`.
 
@@ -133,7 +136,7 @@ To enter the Docker-Swarm mode:
 docker swarm init
 ```
 
-This creates a swarm with a single node, which is the swarm master. Docker Swarm has evolved from Docker compose, so the compose yaml file used in the previous section can also be used here. However, the compose config files accepted by swarm are a subset of the ones accepted by docker-compose, and they won't accept things like "build". They require images. Local images are also not enough, so I had to build the images and push it to my docker repository in 
+This creates a swarm with a single node, which is the swarm master. Docker Swarm has evolved from Docker compose, so the compose yaml file used in the previous section can also be used here. However, the compose config files accepted by swarm are a subset of the ones accepted by docker-compose, and they won't accept things like "build". They require images. Local images are also not enough, so I had to build the images and push it to my docker repository in
 
 https://hub.docker.com/r/zapatilla/hello-cucumber/
 
@@ -192,7 +195,7 @@ Now we should be ready to do this on Azure!
 1. I use DS1 for tests since it's cheaper.
 1. Sit back and relax - deployment takes 15-20 minutes!!
 1. Once it's ready, find IP for the Swarm master by going to the resource group and finding the master, then navigate to its settings.
-1. SSH to that IP. Note that for ACS (not for the other VMs) you'll need to pass the -i switch, even if you have a nicely configured ssh config file. Otherwise you enter your passphrase and it claims it's wrong all the time. So do: 
+1. SSH to that IP. Note that for ACS (not for the other VMs) you'll need to pass the -i switch, even if you have a nicely configured ssh config file. Otherwise you enter your passphrase and it claims it's wrong all the time. So do:
   ``` ssh -i ~/.ssh/id_rsa_azure  raquel@13.94.250.239```
 1. Copy there your `docker-compose.yml` and whatever other files needed for the cucumber cats web app. Git clone?
 1. `cd` to relevant directory and run `docker deploy -c docker-compose.yml hello-swarm`.
@@ -219,7 +222,7 @@ docker build -t hello-flask .
 docker run -p 5000:5000 hello-flask
 ```
 
-* Now you can access from within the machine with 
+* Now you can access from within the machine with
  ```
 curl localhost:5000
 ```
@@ -229,7 +232,3 @@ curl localhost:5000
   1. One of the things in the list will be a Load Balancer which looks like `XYZ-agent-lb-XYZ`. Click on it.
   1. Select "Health Probes". So intuitive... You'll see the default open ports: 80, 443, 8080.
   1. You can make your docker container expose 5000 on 8080, or [open the 5000 end point in the load balancer](https://docs.microsoft.com/en-us/azure/container-service/container-service-enable-public-access). However none of those worked for me... I give up. I might try with other orchestrators some other time.
-
-
-
-
