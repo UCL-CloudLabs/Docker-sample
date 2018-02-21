@@ -22,5 +22,7 @@ This branch hosts the R calculator by David Col'quhoun and a script to serve it.
 
 `sudo iptables -A INPUT -i eth0 -p tcp --dport 3838 -j ACCEPT`
 
+- The network rules will normally be lost if the machine reboots. They can be saved to a file using `iptables-save` and automatically reloaded at reboot [using the `iptables-persistent` package](https://www.thomas-krenn.com/en/wiki/Saving_Iptables_Firewall_Rules_Permanently#iptables-persistent_for_Debian.2FUbuntu). The file can also be monitored for unexpected changes using the `auditctl` and `ausearch` commands.
+
 - After changing the configuration file, shiny-server has to be restarted with:
 `sudo systemctl restart shiny-server`
